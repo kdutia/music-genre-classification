@@ -1,2 +1,3 @@
 genres.tar.gz
-__pycache__**/tmp.pth
+__pycache__
+**/tmp.pth
