@@ -1,6 +1,4 @@
 # Functions for converting audio to spectrograms.
-# TODO: set config using 'conf' class
-
 import librosa
 import numpy as np
 import matplotlib
@@ -33,12 +31,12 @@ class audio_to_spec():
 
     def audio_to_melspectrogram(self, audio):
         spectrogram = librosa.feature.melspectrogram(audio, 
-                                                    sr=conf.sampling_rate,
-                                                    n_mels=conf.n_mels,
-                                                    hop_length=conf.hop_length,
-                                                    n_fft=conf.n_fft,
-                                                    fmin=conf.fmin,
-                                                    fmax=conf.fmax
+                                                    sr=self.sampling_rate,
+                                                    n_mels=self.n_mels,
+                                                    hop_length=self.hop_length,
+                                                    n_fft=self.n_fft,
+                                                    fmin=self.fmin,
+                                                    fmax=self.fmax
                                                     )
         spectrogram = librosa.power_to_db(spectrogram)
         spectrogram = spectrogram.astype(np.float32)
@@ -46,8 +44,8 @@ class audio_to_spec():
 
     def show_melspectrogram(self, mels, title='Log-frequency power spectrogram'):
         librosa.display.specshow(mels, x_axis='time', y_axis='mel', 
-                                sr=conf.sampling_rate, hop_length=conf.hop_length,
-                                fmin=conf.fmin, fmax=conf.fmax
+                                sr=self.sampling_rate, hop_length=self.hop_length,
+                                fmin=self.fmin, fmax=self.fmax
                                 )
         plt.colorbar(format='%+2.0f dB')
         plt.title(title)
