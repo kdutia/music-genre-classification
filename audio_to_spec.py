@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import IPython
 
 class audio_to_spec():
-    def __init__(self, fmin, fmax, n_fft, sampling_rate=44100, hop_length=256, n_mels=128):
+    def __init__(self, fmin=None, fmax=None, n_fft=None, sampling_rate=44100, hop_length=256, n_mels=128):
         self.sampling_rate = sampling_rate
         self.hop_length = hop_length
 

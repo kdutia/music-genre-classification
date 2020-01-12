@@ -11,6 +11,7 @@ class k1c2(nn.Module):
         net = nn.Sequential()
         
         def add_CNN_layer(num, size_in, size_out, kernel_size=3, padding=1, bn=True, pool_size=2):
+            # TODO: what do we want to do with stride here?
             net.add_module( f"conv{num}", nn.Conv2d(size_in, size_out, kernel_size=3, stride=1, padding=padding) )
             if bn: 
                 net.add_module( f"bn{num}",nn.BatchNorm2d(size_out) )
