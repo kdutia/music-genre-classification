@@ -24,12 +24,12 @@ class MelSpecDataset(Dataset):
         if type(idx) == 'torch.Tensor':
             idx = idx.tolist()
 
-        spec_path = os.path.join(self.data_dir, self.data_list.loc[idx, 'relative_dir'])
+        spec_path = os.path.join(self.data_dir, self.data_list.loc[idx, 'relative_dir_png'])
         spec = io.imread(spec_path)
 
         label = self.data_list.loc[idx, 'genre']
 
-        sample = {'image': image, 'label': label}
+        sample = {'image': spec, 'label': label}
 
         if self.transforms is not None:
             sample = self.transforms(sample)
