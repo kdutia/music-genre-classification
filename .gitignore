@@ -2,3 +2,4 @@ genres.tar.gz
 __pycache__
 **/tmp.pth
 .DS_Store
+.vscode
