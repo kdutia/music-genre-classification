@@ -21,7 +21,7 @@ class MelSpecDataset(Dataset):
     def __getitem__(self, idx):
         """Used so that dataset[i] can be used to get the ith item."""
 
-        if torch.istensor(idx):
+        if type(idx) == 'torch.Tensor':
             idx = idx.tolist()
 
         spec_path = os.path.join(self.data_dir, self.data_list.loc[idx, 'relative_dir'])
