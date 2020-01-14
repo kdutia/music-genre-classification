@@ -1,6 +1,10 @@
+import torch
+import torch.nn as nn
+
+from datasets import MelSpecDataset
+import matplotlib.pyplot as plt
+
 def test_dataset():
-    from datasets import MelSpecDataset
-    import matplotlib.pyplot as plt
 
     dataset = MelSpecDataset(csv_loc="data/wav_files.csv", data_dir="data", transforms=None)
 
@@ -24,5 +28,23 @@ def test_dataset():
             plt.show()
             break
 
+def test_dataloader():
+    BATCH_SIZE = 5
+
+    dataset = MelSpecDataset(csv_loc="data/wav_files.csv", data_dir="data", transforms=None)
+    data_loader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4)
+
+    next_item = next(iter(data_loader))
+
+    for i in range(BATCH_SIZE):
+        ax = plt.subplot(BATCH_SIZE,1,i+1)
+        plt.tight_layout()
+
+        ax.set_title(next_item['label'][i])
+        ax.axis('off')
+        plt.imshow(next_item['image'][i,...])
+    
+    plt.show()
+
 # RUN
-test_dataset()
+test_dataloader()

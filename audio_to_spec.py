@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import IPython
 
 class audio_to_spec():
-    def __init__(self, fmin=None, fmax=None, n_fft=None, sampling_rate=44100, hop_length=256, n_mels=128):
+    def __init__(self, fmin=None, fmax=None, n_fft=None, sampling_rate=44100, hop_length=256, n_mels=128, duration=None):
         self.sampling_rate = sampling_rate
         self.hop_length = hop_length
 
@@ -19,14 +19,20 @@ class audio_to_spec():
 
         # length of fft window
         self.n_fft = n_fft or n_mels*20 # TODO: is this a sensible default?
+        
+        # force certain duration of audio files (seconds)
+        self.duration = duration 
 
         # TODO:
-        #self.duration = duration : useful if we want to clip audio files to a certain length
         #self.samples = samples : could also specify number of samples we want to have in the spectrogram
 
 
     def read_audio(self, pathname):
-        y, sr = librosa.load(pathname, sr=self.sampling_rate)
+        if self.duration is not None:
+            # width of y = sr * duration
+            y, sr = librosa.load(pathname, sr=self.sampling_rate, duration=self.duration)
+        else:
+            y, sr = librosa.load(pathname, sr=self.sampling_rate)
         return y
 
     def audio_to_melspectrogram(self, audio):
@@ -65,3 +71,31 @@ class audio_to_spec():
         # TODO: normalize/convert to colour?
 
         matplotlib.image.imsave(image_path, mels)
+
+
+def audio_to_spec_batch(path_to_csv):
+    """convert audio files to spectrogram pngs in the same folder using a csv to find all the audio files"""
+
+    df = pd.read_csv(path_to_csv, index_col=0)
+
+    print('converting audio files to spectrogram images..')
+
+    atspec = audio_to_spec(duration=30)
+
+    for idx, row in tqdm(df.iterrows(), total=df.shape[0]):
+        audio_path = os.path.join(str(path),'data',row['relative_dir_wav'])
+        img_path = audio_path[0:-4] + '.png'
+
+        atspec.audio_file_to_melspec_file(audio_path, img_path)
+
+
+if __name__ == "__main__":
+    from tqdm import tqdm
+    import pandas as pd
+    from pathlib import Path
+    import os
+    
+    path = Path.cwd()
+    csv_path = path/'data'/'wav_files.csv'
+
+    audio_to_spec_batch(csv_path)

@@ -6,4 +6,5 @@ jupyter
 jupyterlab
 librosa
 scikit-image
+tqdm
 # can't install fastai due to a dependency on an unavailable version of numpy (in one of its dependencies)
